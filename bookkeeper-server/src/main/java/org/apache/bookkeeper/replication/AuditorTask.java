@@ -85,6 +85,7 @@ abstract class AuditorTask implements Runnable {
             LOG.info("There is no ledgers for the failed bookie: {}", missingBookies);
             return FutureUtils.Void();
         }
+        // hn 可能存在问题的ledger 写到zk的 under replicated path 下
         LOG.info("Following ledgers: {} of bookie: {} are identified as underreplicated", ledgers, missingBookies);
         auditorStats.getNumUnderReplicatedLedger().registerSuccessfulValue(ledgers.size());
         LongAdder underReplicatedSize = new LongAdder();

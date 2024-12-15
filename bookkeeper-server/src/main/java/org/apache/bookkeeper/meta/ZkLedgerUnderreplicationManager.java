@@ -327,6 +327,7 @@ public class ZkLedgerUnderreplicationManager implements LedgerUnderreplicationMa
         }
         missingReplicas.forEach(builder::addReplica);
         final byte[] urLedgerData = builder.build().toString().getBytes(UTF_8);
+        // hn 标记为underreplicated 创建zk node
         ZkUtils.asyncCreateFullPathOptimistic(
             zkc, znode, urLedgerData, zkAcls, CreateMode.PERSISTENT,
             (rc, path, ctx, name) -> {

@@ -94,6 +94,7 @@ public class DecommissionCommand extends BookieCommand<DecommissionCommand.Decom
             final BookieId bookieAddressToDecommission = (StringUtils.isBlank(remoteBookieidToDecommission)
                                                                   ? BookieImpl.getBookieId(conf)
                                                                   : BookieId.parse(remoteBookieidToDecommission));
+            // hn bk下线
             admin.decommissionBookie(bookieAddressToDecommission);
             LOG.info("The ledgers stored in the given decommissioning bookie: {} are properly replicated",
                      bookieAddressToDecommission);

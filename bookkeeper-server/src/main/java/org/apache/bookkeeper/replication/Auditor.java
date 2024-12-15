@@ -246,6 +246,7 @@ public class Auditor implements AutoCloseable {
         }
         return executor.submit(() -> {
             try {
+                // hn 通过zk临时禁用
                 waitIfLedgerReplicationDisabled();
                 int lostBookieRecoveryDelay = Auditor.this.ledgerUnderreplicationManager
                         .getLostBookieRecoveryDelay();
@@ -386,6 +387,7 @@ public class Auditor implements AutoCloseable {
             }
 
             try {
+                // hn auditor关注 bk 变更事件
                 watchBookieChanges();
                 // Start with all available bookies
                 // to handle situations where the auditor
@@ -404,7 +406,9 @@ public class Auditor implements AutoCloseable {
                 submitShutdownTask();
                 return;
             }
+            // hn 定时探活bk 默认1天
             scheduleBookieCheckTask();
+            // hn 定时检测所有ledger 默认1周
             scheduleCheckAllLedgersTask();
             schedulePlacementPolicyCheckTask();
             scheduleReplicasCheckTask();
@@ -597,6 +601,7 @@ public class Auditor implements AutoCloseable {
         return availableBookies;
     }
 
+    // hn 监听bk上线、下线、只读 事件
     private void watchBookieChanges() throws BKException {
         admin.watchWritableBookiesChanged(bookies -> submitAuditTask());
         admin.watchReadOnlyBookiesChanged(bookies -> submitAuditTask());

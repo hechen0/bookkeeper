@@ -1602,6 +1602,7 @@ public class BookKeeperAdmin implements AutoCloseable {
             throw BKException.create(BKException.Code.IllegalOpException);
         }
 
+        // hn 触发autorecovery审计 把ledger放到under replicated目录下
         triggerAudit();
 
         /*
