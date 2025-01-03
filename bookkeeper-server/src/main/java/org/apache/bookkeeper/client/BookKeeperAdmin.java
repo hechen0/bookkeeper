@@ -1669,6 +1669,7 @@ public class BookKeeperAdmin implements AutoCloseable {
     public static boolean areEntriesOfLedgerStoredInTheBookie(long ledgerId, BookieId bookieAddress,
             LedgerManager ledgerManager) {
         try {
+            // hn 读zk 判断ledger是否成功迁移
             LedgerMetadata ledgerMetadata = ledgerManager.readLedgerMetadata(ledgerId).get().getValue();
             return areEntriesOfLedgerStoredInTheBookie(ledgerId, bookieAddress, ledgerMetadata);
         } catch (InterruptedException ie) {
