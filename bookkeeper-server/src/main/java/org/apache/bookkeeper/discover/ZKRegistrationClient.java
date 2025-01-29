@@ -202,6 +202,7 @@ public class ZKRegistrationClient implements RegistrationClient {
         this.bookieServiceInfoCacheInvalidation = bookieAddressTracking
                                                     ? new BookieServiceInfoCacheInvalidationWatcher() : null;
         this.bookieRegistrationPath = ledgersRootPath + "/" + AVAILABLE_NODE;
+        // hn cookie 啥时候删除
         this.bookieAllRegistrationPath = ledgersRootPath + "/" + COOKIE_NODE;
         this.bookieReadonlyRegistrationPath = this.bookieRegistrationPath + "/" + READONLY;
     }

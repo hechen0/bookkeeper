@@ -558,6 +558,8 @@ public class GarbageCollectorThread implements Runnable {
     }
 
     private boolean removeIfLedgerNotExists(EntryLogMetadata meta) throws EntryLogMetadataMapException {
+        // hn ？为啥要这么弄下 用一个 boolean 有啥问题么?
+        //  boolean modified = false;
         MutableBoolean modified = new MutableBoolean(false);
         meta.removeLedgerIf((entryLogLedger) -> {
             // Remove the entry log ledger from the set if it isn't active.
