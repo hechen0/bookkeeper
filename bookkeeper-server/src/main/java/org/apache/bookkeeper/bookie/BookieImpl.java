@@ -678,6 +678,7 @@ public class BookieImpl implements Bookie {
         }
 
         // Do a fully flush after journal replay
+        // hn journal读完为啥要flush一次
         try {
             syncThread.requestFlush().get();
         } catch (InterruptedException e) {
@@ -958,6 +959,7 @@ public class BookieImpl implements Bookie {
                                   boolean ackBeforeSync, WriteCallback cb, Object ctx, byte[] masterKey)
             throws IOException, BookieException, InterruptedException {
         long ledgerId = handle.getLedgerId();
+        // hn 先写entry 再写journal
         long entryId = handle.addEntry(entry);
 
         bookieStats.getWriteBytes().addCount(entry.readableBytes());
@@ -989,6 +991,7 @@ public class BookieImpl implements Bookie {
         if (LOG.isTraceEnabled()) {
             LOG.trace("Adding {}@{}", entryId, ledgerId);
         }
+        // hn 再写journal
         getJournal(ledgerId).logAddEntry(entry, ackBeforeSync, cb, ctx);
     }
 

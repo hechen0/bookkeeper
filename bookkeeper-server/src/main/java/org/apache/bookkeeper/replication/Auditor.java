@@ -378,6 +378,7 @@ public class Auditor implements AutoCloseable {
     }
 
     public void start() {
+        // hn 为啥auditor只能单节点
         LOG.info("I'm starting as Auditor Bookie. ID: {}", bookieIdentifier);
         // on startup watching available bookie and based on the
         // available bookies determining the bookie failures.
@@ -434,6 +435,7 @@ public class Auditor implements AutoCloseable {
     private void scheduleCheckAllLedgersTask() {
         long interval = conf.getAuditorPeriodicCheckInterval();
 
+        // hn 线上默认关闭定时审计全量
         if (interval > 0) {
             LOG.info("Auditor periodic ledger checking enabled" + " 'auditorPeriodicCheckInterval' {} seconds",
                     interval);

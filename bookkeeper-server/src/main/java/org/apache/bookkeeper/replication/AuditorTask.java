@@ -85,7 +85,7 @@ abstract class AuditorTask implements Runnable {
             LOG.info("There is no ledgers for the failed bookie: {}", missingBookies);
             return FutureUtils.Void();
         }
-        // hn 可能存在问题的ledger 写到zk的 under replicated path 下
+        // hn 可能副本缺失的ledger 写到zk的 under replicated path 下
         LOG.info("Following ledgers: {} of bookie: {} are identified as underreplicated", ledgers, missingBookies);
         auditorStats.getNumUnderReplicatedLedger().registerSuccessfulValue(ledgers.size());
         LongAdder underReplicatedSize = new LongAdder();
@@ -107,6 +107,7 @@ abstract class AuditorTask implements Runnable {
         );
     }
 
+    // hn 可写&只读 bookie 都算可用
     protected List<String> getAvailableBookies() throws BKException {
         // Get the available bookies
         Collection<BookieId> availableBkAddresses = admin.getAvailableBookies();

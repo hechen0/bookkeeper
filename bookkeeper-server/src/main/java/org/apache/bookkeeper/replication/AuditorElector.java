@@ -187,8 +187,10 @@ public class AuditorElector {
                         return;
                     }
                     try {
+                        // hn 循环中抢zk锁
                         ledgerAuditorManager.tryToBecomeAuditor(bookieId, e -> handleAuditorEvent(e));
 
+                        // hn 抢到了锁
                         auditor = new Auditor(bookieId, conf, bkc, false, statsLogger);
                         auditor.start();
                     } catch (InterruptedException e) {

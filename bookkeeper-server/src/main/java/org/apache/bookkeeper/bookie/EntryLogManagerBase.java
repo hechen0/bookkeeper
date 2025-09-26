@@ -79,6 +79,7 @@ abstract class EntryLogManagerBase implements EntryLogManager {
         logChannel.write(entry);
         logChannel.registerWrittenEntry(ledger, entrySize);
 
+        // hn 64位：32位logId + 32位pos
         return (logChannel.getLogId() << 32L) | pos;
     }
 
@@ -169,6 +170,7 @@ abstract class EntryLogManagerBase implements EntryLogManager {
                 listener.onRotateEntryLog();
             }
         } else {
+            // hn 创建新对象
             BufferedLogChannel newLogChannel = entryLoggerAllocator.createNewLog(selectDirForNextEntryLog());
             entryLoggerAllocator.setWritingLogId(newLogChannel.getLogId());
             setCurrentLogForLedgerAndAddToRotate(ledgerId, newLogChannel);

@@ -1602,7 +1602,7 @@ public class BookKeeperAdmin implements AutoCloseable {
             throw BKException.create(BKException.Code.IllegalOpException);
         }
 
-        // hn 触发autorecovery审计 把ledger放到under replicated目录下
+        // hn 触发 auto recovery 审计 把ledger放到under replicated zk目录下
         triggerAudit();
 
         /*
@@ -1619,6 +1619,7 @@ public class BookKeeperAdmin implements AutoCloseable {
          */
 
         BookieLedgerIndexer bookieLedgerIndexer = new BookieLedgerIndexer(bkc.ledgerManager);
+        // hn map<bookieId, Set<ledgerId>> 从zk拉取全量数据
         Map<String, Set<Long>> bookieToLedgersMap = bookieLedgerIndexer.getBookieToLedgerIndex();
         Set<Long> ledgersStoredInThisBookie = bookieToLedgersMap.get(bookieAddress.toString());
         if ((ledgersStoredInThisBookie != null) && (!ledgersStoredInThisBookie.isEmpty())) {

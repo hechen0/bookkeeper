@@ -180,6 +180,7 @@ class EntryLoggerAllocator {
         } while (testLogFile == null);
 
         File newLogFile = new File(dirForNextEntryLog, logFileName);
+        // hn 获取FileChannel
         FileChannel channel = new RandomAccessFile(newLogFile, "rw").getChannel();
 
         BufferedLogChannel logChannel = new BufferedLogChannel(byteBufAllocator, channel, conf.getWriteBufferBytes(),

@@ -468,6 +468,7 @@ public class SingleDirectoryDbLedgerStorage implements CompactableLedgerStorage 
 
     @Override
     public long addEntry(ByteBuf entry) throws IOException, BookieException {
+        // hn 同步写writeCache 等待writeCache异步刷盘
         long startTime = MathUtils.nowInNano();
 
         long ledgerId = entry.getLong(entry.readerIndex());
@@ -489,6 +490,7 @@ public class SingleDirectoryDbLedgerStorage implements CompactableLedgerStorage 
             inserted = writeCache.put(ledgerId, entryId, entry);
         }
 
+        // hn 乐观锁读锁校验版本失败 转为悲观锁
         if (stamp == 0 || !writeCacheRotationLock.validate(stamp)) {
             // The write cache was rotated while we were inserting. We need to acquire the proper read lock and repeat
             // the operation because we might have inserted in a write cache that was already being flushed and cleared,

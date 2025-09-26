@@ -905,6 +905,7 @@ public class Journal implements CheckpointSource {
 
         memoryLimitController.reserveMemory(entry.readableBytes());
 
+        // hn 写到journal队列中
         queue.put(QueueEntry.create(
                 entry, ackBeforeSync, ledgerId, entryId, cb, ctx, MathUtils.nowInNano(),
                 journalStats.getJournalAddEntryStats(),

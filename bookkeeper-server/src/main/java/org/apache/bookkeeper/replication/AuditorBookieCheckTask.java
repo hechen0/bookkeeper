@@ -115,6 +115,7 @@ public class AuditorBookieCheckTask extends AuditorTask {
         LOG.info("Starting auditBookies");
         Stopwatch stopwatch = Stopwatch.createStarted();
         // put exit cases here
+        // hn 先从zk拿 Map<BookieId, Set<LedgerId>> 数据
         Map<String, Set<Long>> ledgerDetails = generateBookie2LedgersIndex();
         try {
             if (!isLedgerReplicationEnabled()) {
@@ -129,8 +130,10 @@ public class AuditorBookieCheckTask extends AuditorTask {
             return;
         }
 
+        // hn 从zk拿可用
         List<String> availableBookies = getAvailableBookies();
         // find lost bookies
+        // hn 看哪些bookie没了
         Set<String> knownBookies = ledgerDetails.keySet();
         Collection<String> lostBookies = CollectionUtils.subtract(knownBookies,
                 availableBookies);
